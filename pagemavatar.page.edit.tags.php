@@ -33,7 +33,7 @@ foreach ($mav_files as $key => $val)
 	$t->parse('MAIN.PAGEMAVATAR_ROW');
 	$i++;
 }
-for (; $i < $cfg['plugin']['pagemavatar']['items']; $i++)
+for (; $i <= $cfg['plugin']['pagemavatar']['items']; $i++)
 {
 	$t->assign(array(
 		'PAGEEDIT_FORM_MAVATARTITLE' => $L['mavatar_file']." ".$i,
