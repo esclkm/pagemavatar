@@ -44,6 +44,7 @@ if (count($mav_files))
 			}
 		}
 	}
+	$temp_array['MAVATARCOUNT'] = count($mav_files);
 }
 else
 {
@@ -51,7 +52,7 @@ else
 	$temp_array['MAVATARFILE'] = '';
 	$temp_array['MAVATARDESC'] = '';
 	$temp_array['MAVATARNUM'] = '';
-
+	$temp_array['MAVATARCOUNT'] = 0;
 	foreach ($mav_opts['thumbs'] as $a_key => $a_val)
 	{
 		$temp_array[mb_strtoupper($a_key).'_MAVATAR'][$ji] = '';
