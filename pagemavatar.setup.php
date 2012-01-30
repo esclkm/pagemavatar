@@ -4,7 +4,7 @@
  * Code=pagemavatar
  * Name=Page Multi Avatar
  * Description=Page Multi Avatar plugin enables you to upload, replace and delete images for a specific page bypassing PFS
- * Version=2.1
+ * Version=2.3.0
  * Date=18-sep-2011
  * Author=Antonio Graber, esclkm littledev.ru
  * Copyright=(c)Antonio Graber, esclkm

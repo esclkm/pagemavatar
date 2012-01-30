@@ -12,8 +12,8 @@ defined('COT_CODE') or die('Wrong URL');
 global $db_mav, $mav_opts, $mav_struct, $mav_sets, $R;
 
 $db_mav = 'cot_pagemavatar';
+require_once cot_incfile('pagemavatar', 'plug', 'resources');
 
-$R['pagemavatar_input_file'] = '<a href="{$filepath}">{$value}</a><br /><input type="file" name="{$name}" {$attrs} />';
 
 $tpaset = str_replace("\r\n", "\n", $cfg['plugin']['pagemavatar']['set']);
 $tpaset = explode("\n", $tpaset);
@@ -31,7 +31,7 @@ foreach ($tpaset as $val)
 			{
 				$val2 = explode('-', $val2);
 				$val2[3] = (!in_array($val2[3], array('crop', 'height', 'width'))) ? 'auto' : $val2[3];
-				$thumbs[$val2[0]] = array('x' => (int)$val2[1], 'y' => (int)$val2[2], 'set' => $val2[3]);
+				$thumbs[$val2[0]] = array('x' => (int) $val2[1], 'y' => (int) $val2[2], 'set' => $val2[3]);
 			}
 		}
 
@@ -40,9 +40,9 @@ foreach ($tpaset as $val)
 		$mav_sets[$val[0]] = array(
 			'path' => $val[1],
 			'thumbs' => $thumbs,
-			'req' => (int)$val[3] ? 1 : 0,
+			'req' => (int) $val[3] ? 1 : 0,
 			'ext' => (!empty($val[4])) ? explode(' ', $val[4]) : array('jpg', 'jpeg', 'png', 'gif'),
-			'max' => ((int)$val[5] > 0) ? $val[5] : 0
+			'max' => ((int) $val[5] > 0) ? $val[5] : 0
 		);
 	}
 }
@@ -64,7 +64,7 @@ $mav_opts = ($mav_sets[$mav_catp]) ? $mav_sets[$mav_catp] : $mav_opts;
 
 function cot_mavreset($cat)
 {
-	
+
 	global $mav_sets;
 	$mav_catp_p = cot_structure_parents('page', $cat, 'first');
 	$mav_opts = ($mav_sets[$mav_catp_p]) ? $mav_sets[$mav_catp_p] : $mav_sets['all'];
@@ -72,7 +72,7 @@ function cot_mavreset($cat)
 	return($mav_opts);
 }
 
-function cot_getpagemavatars($page_id, $forcibly=false)
+function cot_getpagemavatars($page_id, $forcibly = false)
 {
 	global $db, $db_mav, $cfg;
 	static $mav_struct;
@@ -80,11 +80,12 @@ function cot_getpagemavatars($page_id, $forcibly=false)
 	{
 		unset($mav_struct[$page_id]);
 		$mav_struct[$page_id] = array();
-		$mav_sql = $db->query("SELECT * FROM $db_mav WHERE mav_pid = ".(int)$page_id." ORDER BY mav_item");
+		$mav_sql = $db->query("SELECT * FROM $db_mav WHERE mav_pid = " . (int) $page_id . " ORDER BY mav_item");
 		while ($mav_row = $mav_sql->fetch())
 		{
 			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['path'] = $mav_row['mav_path'];
 			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['desc'] = $mav_row['mav_desc'];
+			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['key'] = $mav_row['mav_key'];
 		}
 	}
 	return $mav_struct[$page_id];
@@ -92,16 +93,20 @@ function cot_getpagemavatars($page_id, $forcibly=false)
 
 function cot_checkemptyrow($i, $mav_files)
 {
-	while(isset($mav_files[$i]))
+	while (isset($mav_files[$i]))
 	{
 		$i++;
 	}
 	return($i);
 }
-function cot_mav_upload($id, $mav_data, $mav_paset)
+
+function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_key = array())
 {
 	global $db, $db_mav, $usr, $mav_struct;
 	$mav_files = cot_getpagemavatars($id, true);
+
+	$mav_desc = is_array($mav_desc) ? $mav_desc : array();
+	$mav_key = is_array($mav_key) ? $mav_key : array();
 	if (is_array($mav_data['name']))
 	{
 		$i = 1;
@@ -113,15 +118,18 @@ function cot_mav_upload($id, $mav_data, $mav_paset)
 				//echo "NEED UPLOAD $i\n";
 				$mav_data['file_ext'][$key] = mb_strtolower(end(explode(".", $val)));
 
-				$filename = str_replace('.'.$mav_data['file_ext'][$key], '', $val);
+				$filename = str_replace('.' . $mav_data['file_ext'][$key], '', $val);
 
-				$mav_pafname = "page_".$id."_".$i.".".$mav_data['file_ext'][$key];
-				$mav_filename = $mav_paset['path'].$mav_pafname;
+				$mav_pafname = "page_" . $id . "_" . $i . "." . $mav_data['file_ext'][$key];
+				$mav_filename = $mav_paset['path'] . $mav_pafname;
 				if (file_exists($mav_filename))
 				{
 					@unlink($mav_filename);
 				}
 				$db->delete($db_mav, "mav_pid=$id AND mav_item=$i");
+
+				$desc = cot_import($mav_desc[$key], 'D', 'TXT');
+				$key = cot_import($mav_key[$key], 'D', 'TXT');
 
 				move_uploaded_file($mav_data['tmp_name'][$key], $mav_filename);
 				$mav_dbdata = array(
@@ -129,14 +137,15 @@ function cot_mav_upload($id, $mav_data, $mav_paset)
 					'mav_uid' => $usr['id'],
 					'mav_item' => $i,
 					'mav_path' => $mav_pafname,
-					'mav_desc' => $filename
+					'mav_desc' => (!empty($desc)) ? $desc : $filename,
+					'mav_key' => $key
 				);
 				$db->insert($db_mav, $mav_dbdata);
 				if (file_exists($mav_filename) && in_array($mav_data['file_ext'][$key], array('jpg', 'jpeg', 'png', 'gif')))
 				{
 					foreach ($mav_paset['thumbs'] as $key => $val)
 					{
-						$mav_newfname = $mav_paset['path'].$key.$mav_pafname;
+						$mav_newfname = $mav_paset['path'] . $key . $mav_pafname;
 						if (file_exists($mav_newfname))
 						{
 							@unlink($mav_newfname);
@@ -236,7 +245,7 @@ if (!function_exists(cot_thumb))
 					$height = $height_orig;
 				}
 			}
-			$newimage = imagecreatetruecolor($width, $height);//
+			$newimage = imagecreatetruecolor($width, $height); //
 		}
 
 		switch ($ext)

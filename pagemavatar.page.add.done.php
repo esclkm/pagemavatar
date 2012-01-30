@@ -20,6 +20,8 @@ require_once cot_incfile('pagemavatar', 'plug');
 
 if (!cot_error_found())
 {
-	cot_mav_upload($id, $_FILES['pagemavatar'], $mav_opts);
+	$mav_keys=cot_import('pagemavatarkey', 'P', 'ARR');
+	$mav_descs=cot_import('pagemavatardesc', 'P', 'ARR');
+	cot_mav_upload($id, $_FILES['pagemavatar'], $mav_opts, $mav_descs, $mav_keys);
 }
 ?>

@@ -33,6 +33,7 @@ if (count($mav_files))
 			$temp_array['MAVATAR'][$ji] = $filename;
 			$temp_array['MAVATARFILE'][$ji] = $val['path'];
 			$temp_array['MAVATARDESC'][$ji] = $val['desc'];
+			$temp_array['MAVATARDESC'][$ji] = $val['key'];
 			$temp_array['MAVATARNUM'][$ji] = $ji;
 
 			foreach ($mav_opts['thumbs'] as $a_key => $a_val)
