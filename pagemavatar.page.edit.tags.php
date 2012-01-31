@@ -50,7 +50,7 @@ for ($i; $i <= $cfg['plugin']['pagemavatar']['items']; $i++)
 }
 $t->assign(array(
 	'PAGEEDIT_FORM_MAVATAR' => cot_rc('pagemavatar_add_ajax', array(
-		'input_file' => cot_inputbox('file', 'pagemavaar[]', '', 'class="mavfile" size="20"', 'pagemavatar_input_file'),
+		'input_file' => cot_inputbox('file', 'pagemavatar[]', '', 'class="mavfile" size="20"', 'pagemavatar_input_file'),
 		'input_desc' => cot_inputbox('text', 'pagemavatardesc[]', '', 'class="mavdesc" size="20"'),
 		'input_keys' => cot_inputbox('text', 'pagemavatarkey[]', '', 'class="mavkey" size="20"')
 	))

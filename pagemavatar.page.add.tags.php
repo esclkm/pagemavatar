@@ -29,7 +29,7 @@ for ($i = 0; $i < $cfg['plugin']['pagemavatar']['items']; ++$i)
 }
 $t->assign(array(
 	'PAGEADD_FORM_MAVATAR' => cot_rc('pagemavatar_add_ajax', array(
-		'input_file' => cot_inputbox('file', 'pagemavaar[]', '', 'class="file" size="20"', 'pagemavatar_input_file'),
+		'input_file' => cot_inputbox('file', 'pagemavatar[]', '', 'class="file" size="20"', 'pagemavatar_input_file'),
 		'input_desc' => cot_inputbox('text', 'pagemavatardesc[]', '', 'class="desc" size="20"'),
 		'input_keys' => cot_inputbox('text', 'pagemavatarkey[]', '', 'class="desc" size="20"')
 	))
