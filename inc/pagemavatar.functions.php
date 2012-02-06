@@ -129,7 +129,7 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 				$db->delete($db_mav, "mav_pid=$id AND mav_item=$i");
 
 				$desc = cot_import($mav_desc[$key], 'D', 'TXT');
-				$key = cot_import($mav_key[$key], 'D', 'TXT');
+				$mavkey = cot_import($mav_key[$key], 'D', 'TXT');
 
 				move_uploaded_file($mav_data['tmp_name'][$key], $mav_filename);
 				$mav_dbdata = array(
@@ -138,7 +138,7 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 					'mav_item' => $i,
 					'mav_path' => $mav_pafname,
 					'mav_desc' => (!empty($desc)) ? $desc : $filename,
-					'mav_key' => $key
+					'mav_key' => $mavkey
 				);
 				$db->insert($db_mav, $mav_dbdata);
 				if (file_exists($mav_filename) && in_array($mav_data['file_ext'][$key], array('jpg', 'jpeg', 'png', 'gif')))
