@@ -30,33 +30,27 @@ if (count($mav_files))
 		if (!empty($val['path']) && file_exists($filename))
 		{
 			$ji++;
-			$temp_array['MAVATAR'][$ji] = $filename;
-			$temp_array['MAVATARFILE'][$ji] = $val['path'];
-			$temp_array['MAVATARDESC'][$ji] = $val['desc'];
-			$temp_array['MAVATARDESC'][$ji] = $val['key'];
-			$temp_array['MAVATARNUM'][$ji] = $ji;
+			$tempmav['FILE'] = $filename;
+			$tempmav['PATH'] = $val['path'];
+			$tempmav['DESC'] = $val['desc'];
+			$tempmav['KEY'] = $val['key'];
+			$tempmav['NUM'] = $ji;
 
 			foreach ($mav_opts['thumbs'] as $a_key => $a_val)
 			{
 				$newfilename = $mav_opts['path'].$a_key.$val['path'];
 				$newfilename = file_exists($newfilename) ? $newfilename : '';
 
-				$temp_array[mb_strtoupper($a_key).'_MAVATAR'][$ji] = $newfilename;
+				$tempmav[mb_strtoupper($a_key)] = $newfilename;
 			}
 		}
 	}
+	$temp_array['MAVATAR'][$ji] = $tempmav;
 	$temp_array['MAVATARCOUNT'] = count($mav_files);
 }
 else
 {
 	$temp_array['MAVATAR'] = '';
-	$temp_array['MAVATARFILE'] = '';
-	$temp_array['MAVATARDESC'] = '';
-	$temp_array['MAVATARNUM'] = '';
 	$temp_array['MAVATARCOUNT'] = 0;
-	foreach ($mav_opts['thumbs'] as $a_key => $a_val)
-	{
-		$temp_array[mb_strtoupper($a_key).'_MAVATAR'][$ji] = '';
-	}
 }
 ?>
