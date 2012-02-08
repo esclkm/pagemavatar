@@ -44,8 +44,8 @@ if (count($mav_files))
 				$tempmav[mb_strtoupper($a_key)] = $newfilename;
 			}
 		}
+		$temp_array['MAVATAR'][$ji] = $tempmav;
 	}
-	$temp_array['MAVATAR'][$ji] = $tempmav;
 	$temp_array['MAVATARCOUNT'] = count($mav_files);
 }
 else
