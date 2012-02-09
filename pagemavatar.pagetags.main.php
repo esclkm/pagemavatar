@@ -39,6 +39,12 @@ if (count($mav_files))
 			foreach ($mav_opts['thumbs'] as $a_key => $a_val)
 			{
 				$newfilename = $mav_opts['path'].$a_key.$val['path'];
+				// try to Add if not exists 
+				if (!file_exists($newfilename))
+				{
+					cot_thumb($filename, $newfilename, $a_val['x'], $a_val['y'], $a_val['set']);
+				}
+				//
 				$newfilename = file_exists($newfilename) ? $newfilename : '';
 
 				$tempmav[mb_strtoupper($a_key)] = $newfilename;
@@ -46,7 +52,7 @@ if (count($mav_files))
 		}
 		$temp_array['MAVATAR'][$ji] = $tempmav;
 	}
-	$temp_array['MAVATARCOUNT'] = count($mav_files);
+	$temp_array['MAVATARCOUNT'] = $ji;
 }
 else
 {

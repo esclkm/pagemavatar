@@ -31,7 +31,7 @@ foreach ($tpaset as $val)
 			{
 				$val2 = explode('-', $val2);
 				$val2[3] = (!in_array($val2[3], array('crop', 'height', 'width'))) ? 'auto' : $val2[3];
-				$thumbs[$val2[0]] = array('x' => (int) $val2[1], 'y' => (int) $val2[2], 'set' => $val2[3]);
+				$thumbs[$val2[0]] = array('x' => $val2[1], 'y' => $val2[2], 'set' => $val2[3]);
 			}
 		}
 
