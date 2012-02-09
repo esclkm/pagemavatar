@@ -178,6 +178,9 @@ if (!function_exists(cot_thumb))
 		list($width_orig, $height_orig) = getimagesize($source);
 		$x_pos = 0;
 		$y_pos = 0;
+		
+		$width =  (mb_substr($width, -1, 1) == '%') ? (int)($width_orig * (int)mb_substr($width, 0, -1) / 100) : (int)$width;
+		$height =  (mb_substr($height, -1, 1) == '%') ? (int)($height_orig * (int)mb_substr($height, 0, -1) / 100) : (int)$height;
 
 		if ($resize == 'crop')
 		{
@@ -200,7 +203,31 @@ if (!function_exists(cot_thumb))
 		}
 		else
 		{
-			if ($resize == 'auto')
+			if ($resize == 'width' || $height == 0)
+			{
+				if ($width_orig > $width)
+				{
+					$height = $height_orig * $width / $width_orig;
+				}
+				else
+				{
+					$width = $width_orig;
+					$height = $height_orig;
+				}
+			}
+			elseif ($resize == 'height' || $width == 0)
+			{
+				if ($height_orig > $height)
+				{
+					$width = $width_orig * $height / $height_orig;
+				}
+				else
+				{
+					$width = $width_orig;
+					$height = $height_orig;
+				}
+			}
+			elseif ($resize == 'auto')
 			{
 				if ($width_orig < $width && $height_orig < $height)
 				{
@@ -220,31 +247,7 @@ if (!function_exists(cot_thumb))
 				}
 			}
 
-			if ($resize == 'width')
-			{
-				if ($width_orig > $width)
-				{
-					$height = $height_orig * $width / $width_orig;
-				}
-				else
-				{
-					$width = $width_orig;
-					$height = $height_orig;
-				}
-			}
 
-			if ($resize == 'height')
-			{
-				if ($height_orig > $height)
-				{
-					$width = $width_orig * $height / $height_orig;
-				}
-				else
-				{
-					$width = $width_orig;
-					$height = $height_orig;
-				}
-			}
 			$newimage = imagecreatetruecolor($width, $height); //
 		}
 
