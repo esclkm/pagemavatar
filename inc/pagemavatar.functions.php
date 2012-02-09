@@ -100,18 +100,40 @@ function cot_checkemptyrow($i, $mav_files)
 	return($i);
 }
 
-function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_key = array())
+function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_key = array(), $mav_delete = array())
 {
 	global $db, $db_mav, $usr, $mav_struct;
 	$mav_files = cot_getpagemavatars($id, true);
 
 	$mav_desc = is_array($mav_desc) ? $mav_desc : array();
 	$mav_key = is_array($mav_key) ? $mav_key : array();
+	$mav_delete = is_array($mav_delete) ? $mav_delete : array();
+
 	if (is_array($mav_data['name']))
 	{
 		$i = 1;
+	
 		foreach ($mav_data['name'] as $key => $val)
 		{
+			$desc = cot_import($mav_desc[$key], 'D', 'TXT');
+			$mavkey = cot_import($mav_key[$key], 'D', 'TXT');
+			if ((bool) $mav_delete[$key])
+			{
+				$mav_filename = $mav_paset['path'] . $mav_files[$key]['path'];
+				if (file_exists($mav_filename))
+				{
+					@unlink($mav_filename);
+				}
+				$db->delete($db_mav, "mav_pid=$id AND mav_item=$key");
+				foreach ($mav_paset['thumbs'] as $a_key => $a_val)
+				{
+					$mav_newfname = $mav_paset['path'] . $a_key . $mav_files[$key]['path'];
+					if (file_exists($mav_newfname))
+					{
+						@unlink($mav_newfname);
+					}
+				}
+			}
 			if (!empty($val))
 			{
 				//$i = cot_checkemptyrow($i, $mav_files);
@@ -127,9 +149,6 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 					@unlink($mav_filename);
 				}
 				$db->delete($db_mav, "mav_pid=$id AND mav_item=$i");
-
-				$desc = cot_import($mav_desc[$key], 'D', 'TXT');
-				$mavkey = cot_import($mav_key[$key], 'D', 'TXT');
 
 				move_uploaded_file($mav_data['tmp_name'][$key], $mav_filename);
 				$mav_dbdata = array(
@@ -153,6 +172,14 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 						cot_thumb($mav_filename, $mav_newfname, $val['x'], $val['y'], $val['set']);
 					}
 				}
+			}
+			else
+			{
+				$mav_dbdata = array(
+					'mav_desc' => $desc,
+					'mav_key' => $mavkey
+				);
+				$db->update($db_mav, $mav_dbdata, "mav_pid=$id AND mav_item=$i");
 			}
 			$i++;
 		}
@@ -178,9 +205,9 @@ if (!function_exists(cot_thumb))
 		list($width_orig, $height_orig) = getimagesize($source);
 		$x_pos = 0;
 		$y_pos = 0;
-		
-		$width =  (mb_substr($width, -1, 1) == '%') ? (int)($width_orig * (int)mb_substr($width, 0, -1) / 100) : (int)$width;
-		$height =  (mb_substr($height, -1, 1) == '%') ? (int)($height_orig * (int)mb_substr($height, 0, -1) / 100) : (int)$height;
+
+		$width = (mb_substr($width, -1, 1) == '%') ? (int) ($width_orig * (int) mb_substr($width, 0, -1) / 100) : (int) $width;
+		$height = (mb_substr($height, -1, 1) == '%') ? (int) ($height_orig * (int) mb_substr($height, 0, -1) / 100) : (int) $height;
 
 		if ($resize == 'crop')
 		{
