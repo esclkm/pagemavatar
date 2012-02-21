@@ -49,8 +49,13 @@ if (count($mav_files))
 
 				$tempmav[mb_strtoupper($a_key)] = $newfilename;
 			}
+			$temp_array['MAVATAR'][$ji] = $tempmav;
 		}
-		$temp_array['MAVATAR'][$ji] = $tempmav;
+		else
+		{
+			global $db_mav;
+			$db->delete($db_mav, "mav_id=".(int)$val['id']);	
+		}
 	}
 	$temp_array['MAVATARCOUNT'] = $ji;
 }

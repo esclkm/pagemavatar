@@ -86,6 +86,7 @@ function cot_getpagemavatars($page_id, $forcibly = false)
 			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['path'] = $mav_row['mav_path'];
 			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['desc'] = $mav_row['mav_desc'];
 			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['key'] = $mav_row['mav_key'];
+			$mav_struct[$mav_row['mav_pid']][$mav_row['mav_item']]['id'] = $mav_row['mav_id'];
 		}
 	}
 	return $mav_struct[$page_id];
