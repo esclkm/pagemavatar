@@ -57,12 +57,7 @@ if (!$mav_sets['all'])
 	);
 }
 
-$mav_catp = cot_import('rpagecat', 'P', 'TXT');
-$mav_catp_p = cot_structure_parents('page', $mav_catp, 'first');
-$mav_opts = ($mav_sets[$mav_catp_p]) ? $mav_sets[$mav_catp_p] : $mav_sets['all'];
-$mav_opts = ($mav_sets[$mav_catp]) ? $mav_sets[$mav_catp] : $mav_opts;
-
-function cot_mavreset($cat)
+function cot_mav_getopts($cat)
 {
 
 	global $mav_sets;
@@ -101,8 +96,9 @@ function cot_checkemptyrow($i, $mav_files)
 	return($i);
 }
 
-function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_key = array(), $mav_delete = array())
+function cot_mav_upload($id, $mav_data, $page_cat, $mav_desc = array(), $mav_key = array(), $mav_delete = array())
 {
+	$mav_paset = cot_mav_getopts($page_cat);
 	global $db, $db_mav, $usr, $mav_struct;
 	$mav_files = cot_getpagemavatars($id, true);
 

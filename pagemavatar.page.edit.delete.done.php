@@ -16,6 +16,7 @@
 defined('COT_CODE') or die('Wrong URL');
 
 require_once cot_incfile('pagemavatar', 'plug');
+$mav_opts = cot_mav_getopts($row_page_delete['page_cat']);
 $mav_files = cot_getpagemavatars($id, true);
 if (is_array($mav_files))
 {

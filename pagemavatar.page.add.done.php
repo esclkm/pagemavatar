@@ -24,7 +24,7 @@ if (!cot_error_found())
 	$mav_del = cot_import('pagemavatardelete', 'P', 'ARR');
 	$mav_keys = cot_import('pagemavatarkey', 'P', 'ARR');
 	$mav_descs = cot_import('pagemavatardesc', 'P', 'ARR');
-	cot_mav_upload($id, $_FILES['pagemavatar'], $mav_opts, $mav_descs, $mav_keys, $mav_del);
+	cot_mav_upload($id, $_FILES['pagemavatar'], $rpage['page_cat'], $mav_descs, $mav_keys, $mav_del);
 }
 
 ?>

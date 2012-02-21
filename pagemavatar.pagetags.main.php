@@ -21,7 +21,7 @@ global $mav_opts, $mav_struct;
 $mav_files = cot_getpagemavatars($page_data['page_id']);
 
 $ji = 0;
-$mav_opts = cot_mavreset($page_data['page_cat']);
+$mav_opts = cot_mav_getopts($page_data['page_cat']);
 if (count($mav_files))
 {
 	foreach ($mav_files as $key => $val)
