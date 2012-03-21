@@ -23,7 +23,7 @@ $i = 1;
 $mavpr = ($m == "add") ? 'ADD' : 'EDIT';
 if ((int) $id > 0)
 {
-	$mav_files = cot_getpagemavatars($id);
+	$mav_files = cot_getpagemavatars($id, true, false);
 
 	foreach ($mav_files as $key => $val)
 	{
@@ -33,10 +33,10 @@ if ((int) $id > 0)
 			'PAGE'.$mavpr.'_FORM_MAVATARTITLE' => $L['mavatar_file'] . " " . $i,
 			'PAGE'.$mavpr.'_FORM_MAVATARDESC' => $mav_files[$key]['desc'],
 			'PAGE'.$mavpr.'_FORM_MAVATARFILE' => $mav_file,
-			'PAGE'.$mavpr.'_FORM_MAVATAR' => cot_inputbox('file', 'pagemavatar[' . $key . ']', '', 'class="mavfile" size="20"', 'pagemavatar_input_file'),
-			'PAGE'.$mavpr.'_FORM_MAVATARDESC_INPUT' => cot_inputbox('text', 'pagemavatardesc[' . $key . ']', $mav_files[$key]['desc'], 'class="mavdesc" size="20"'),
-			'PAGE'.$mavpr.'_FORM_MAVATARKEY_INPUT' => cot_inputbox('text', 'pagemavatarkey[' . $key . ']', $mav_files[$key]['key'], 'class="mavkey" size="20"'),
-			'PAGE'.$mavpr.'_FORM_MAVATARDELETE' => cot_radiobox(0, 'pagemavatardelete[' . $key . ']', array(1, 0), array($L['Yes'], $L['No']))
+			'PAGE'.$mavpr.'_FORM_MAVATAR' => cot_inputbox('file', 'pagemavatar[n' . $key . ']', '', 'class="mavfile" size="20"', 'pagemavatar_input_file'),
+			'PAGE'.$mavpr.'_FORM_MAVATARDESC_INPUT' => cot_inputbox('text', 'pagemavatardesc[n' . $key . ']', $mav_files[$key]['desc'], 'class="mavdesc" size="20"'),
+			'PAGE'.$mavpr.'_FORM_MAVATARKEY_INPUT' => cot_inputbox('text', 'pagemavatarkey[n' . $key . ']', $mav_files[$key]['key'], 'class="mavkey" size="20"'),
+			'PAGE'.$mavpr.'_FORM_MAVATARDELETE' => cot_radiobox(0, 'pagemavatardelete[n' . $key . ']', array(1, 0), array($L['Yes'], $L['No']))
 		));
 		$t->parse('MAIN.PAGEMAVATAR_ROW');
 		$i++;

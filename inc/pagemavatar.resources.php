@@ -11,7 +11,7 @@ defined('COT_CODE') or die('Wrong URL');
 
 $R['pagemavatar_input_file'] = '<a href="{$filepath}">{$value}</a><br /><input type="file" name="{$name}" {$attrs} />';
 
-$R['pagemavatar_add_ajax'] = '<div class="pagemavatarfileblock">{$input_file}'.$L['Description'].': {$input_desc} '.$L['Key'].': {$input_keys}
+$R['pagemavatar_add_ajax'] = '<div class="pagemavatarfileblock mavatarselem">{$input_file}</br>'.$L['Description'].': {$input_desc} '.$L['Order'].': {$input_keys} 
 <button name="deloptionfile" type="button" class="deloptionfile" title="'.$L['Delete'].'" style="display:none;">'.$L['Delete'].'</button></div>		
 <button id="addoptionfile" name="addoptionfile" type="button" title="'.$L['Add'].'" style="display:none;">'.$L['Add'].'</button>
 <script type="text/javascript">
