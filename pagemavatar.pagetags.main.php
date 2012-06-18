@@ -21,9 +21,10 @@ global $mav_opts, $mav_struct;
 $mav_files = cot_getpagemavatars($page_data['page_id']);
 
 $ji = 0;
-$mav_opts = cot_mav_getopts($page_data['page_cat']);
+$mav_opts = cot_mavreset($page_data['page_cat']);
 if (count($mav_files))
 {
+	$temp_array['MAVATAR'] = array();
 	foreach ($mav_files as $key => $val)
 	{
 		$filename = $mav_opts['path'].$val['path'];
@@ -50,11 +51,6 @@ if (count($mav_files))
 				$tempmav[mb_strtoupper($a_key)] = $newfilename;
 			}
 			$temp_array['MAVATAR'][$ji] = $tempmav;
-		}
-		else
-		{
-			global $db_mav;
-			$db->delete($db_mav, "mav_id=".(int)$val['id']);	
 		}
 	}
 	$temp_array['MAVATARCOUNT'] = $ji;

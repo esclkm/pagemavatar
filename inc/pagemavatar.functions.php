@@ -80,7 +80,7 @@ function cot_getpagemavatars($page_id, $forcibly = false, $keyorder = true)
 	{
 		unset($mav_struct[$page_id]);
 		$mav_struct[$page_id] = array();
-		$sorts = ($keyorder) ? 'mav_key ASC, mav_item ASC' : 'mav_item ASC';
+		$sorts = ($keyorder) ? 'mav_key ASC, mav_item ASC' : 'mav_key ASC, mav_item ASC';
 		$mav_sql = $db->query("SELECT * FROM $db_mav WHERE mav_pid = " . (int) $page_id . " ORDER BY $sorts");
 		$i = 0;
 		while ($mav_row = $mav_sql->fetch())
@@ -116,13 +116,14 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 
 	if (is_array($mav_data['name']))
 	{
-		$i = 1;
+		$i = 0;
 	
 		foreach ($mav_data['name'] as $key => $val)
 		{
 			$desc = cot_import($mav_desc[$key], 'D', 'TXT');
 			$mavkey = cot_import($mav_key[$key], 'D', 'TXT');
-			$keyx=str_replace('n', '', $key);
+			$keyx = str_replace('n', '', $key);
+			$i = ((int)$keyx > $i) ? (int)$keyx + 1 : $i + 1;
 			if ((bool) $mav_delete[$key])
 			{
 				$mav_filename = $mav_paset['path'] . $mav_files[$keyx]['path'];
@@ -187,7 +188,6 @@ function cot_mav_upload($id, $mav_data, $mav_paset, $mav_desc = array(), $mav_ke
 				);
 				$db->update($db_mav, $mav_dbdata, "mav_pid=$id AND mav_item=$keyx");
 			}
-			$i++;
 		}
 	}
 }
